@@ -1,57 +1,117 @@
 <!DOCTYPE html>
+<!-- HTML5标准文档声明 -->
 <html lang="zh-CN">
+<!-- 页面语言设置为简体中文 -->
 <head>
+<!-- 头部区域：存放元标签、样式表 -->
 <meta charset="UTF-8">
+<!-- 设置网页字符编码，避免中文乱码 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 移动端自适应：宽度跟随设备，禁止默认缩放 -->
 <title>专属入口 | 致父亲</title>
+<!-- 浏览器标签页标题 -->
 <style>
+/* 全局样式统一重置 */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Microsoft YaHei", sans-serif;
+  margin: 0;            /* 清除所有元素默认外边距 */
+  padding: 0;           /* 清除所有元素默认内边距 */
+  box-sizing: border-box;/* 内边距、边框不会撑大盒子总宽度 */
+  font-family: "Microsoft YaHei", sans-serif; /* 默认字体微软雅黑 */
 }
+/* 页面整体body样式 */
 body {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #2c3e50, #34495e);
+  min-height: 100vh;                                  /* 高度铺满浏览器可视区域 */
+  background: linear-gradient(135deg, #2c3e50, #34495e); /* 深色斜向渐变背景 */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.6s ease-in-out;
+  align-items: center;                                /* 登录卡片垂直居中 */
+  justify-content: center;                             /* 登录卡片水平居中 */
+  opacity: 1;                                         /* 默认完全显示 */
+  transition: opacity 0.6s ease-in-out;               /* 透明度过渡，用于页面淡出动画 */
+  padding: 15px;
 }
+/* 页面淡出样式类 */
 .page-leave {
   opacity: 0 !important;
 }
+
+/* ========== 顶部居中提示容器：整组气泡页面水平居中 ========== */
+.global-top-hint {
+  position: fixed;
+  top: 24px;               /* 控制气泡距离屏幕顶部的高度，可自由修改 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 30px);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                /* 多个气泡之间的上下间距 */
+  z-index: 99;             /* 层级置顶，不会被登录卡片遮挡 */
+}
+/* 单条独立气泡样式，每条单独半透明圆角块 */
+.hint-bubble {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 8px 14px;
+  backdrop-filter: blur(4px);
+  font-size: 20px;
+  color: rgba(255,255,255,0.7);
+  text-align: left;
+}
+
+/* 登录卡片主容器 */
 .login-card {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.1); /* 卡片半透底色 */
   padding: 40px 30px;
   border-radius: 16px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);       /* 毛玻璃模糊效果 */
   border: 1px solid rgba(255,255,255,0.2);
   text-align: center;
   max-width: 400px;
   width: 100%;
   color: #fff;
 }
+/* 卡片标题样式 */
 .login-card h2 {
   margin-bottom: 10px;
   font-size: 24px;
 }
+/* 卡片描述文字 */
 .desc {
   color: #ccc;
   margin-bottom: 30px;
   font-size: 14px;
 }
+/* 密码输入框外层定位容器 */
+.pwd-wrap {
+  position: relative;
+  margin: 0 auto 16px auto;
+  width: 100%;
+}
+/* 密码输入框：输入文字居中显示 */
 #pwdInput {
   width: 100%;
   padding: 14px 16px;
+  padding-right: 46px; /* 右侧预留眼睛按钮位置 */
   border-radius: 8px;
   border: none;
   outline: none;
-  font-size: 16px;
-  margin-bottom: 16px;
+  font-size: 21px;
+  text-align: center;
 }
+/* 显示隐藏密码眼睛按钮 */
+#eyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666;
+}
+/* 提交按钮样式 */
 #submitBtn {
   width: 100%;
   padding: 14px;
@@ -63,55 +123,111 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
+/* 按钮悬浮变色效果 */
 #submitBtn:hover {
   background-color: #e67e22;
 }
+/* 底部消息提示容器 */
 .tip {
   margin-top: 12px;
   font-size: 14px;
   min-height: 20px;
 }
+/* 错误文字颜色 */
 .error { color: #ff6b6b; }
+/* 成功文字颜色 */
 .success { color: #2ecc71; }
+/* 警告文字颜色 */
 .warn { color: #ffc107; }
 </style>
 </head>
+<!-- 页面可视主体 -->
 <body id="bodyBox">
+  <!-- 页面顶部水平居中的多条独立气泡提示 -->
+  <div class="global-top-hint">
+    <div class="hint-bubble">💡 提示1：你的手机的锁屏密码 </div>
+    <div class="hint-bubble">💡 提示2：妈妈的手机锁屏密码 </div>
+    <div class="hint-bubble">💡 提示3：家在哪个地方（）牧</div>
+  </div>
+
 <div class="login-card">
   <h2>🔒 专属入口</h2>
   <p class="desc">请输入专属密码，打开给爸爸的祝福</p>
-  <input type="password" id="pwdInput" placeholder="请输入密码">
+
+  <!-- 密码输入区域 -->
+  <div class="pwd-wrap">
+    <!-- 默认明文显示text，输入文字居中 -->
+    <input type="text" id="pwdInput" placeholder="三选一 任意一个答案">
+    <button id="eyeBtn">🙈</button>
+  </div>
+
+  <!-- 登录提交按钮 -->
   <button id="submitBtn">进入祝福页面</button>
+  <!-- 错误/成功动态提示 -->
   <div class="tip" id="tipText"></div>
 </div>
 
 <script>
-const RIGHT_PASSWORD = "2";
-let errorCount = 0; // 错误计数器，初始0
-const MAX_ERROR = 1; // 最多错误5次
+// ========== 密码配置区：在这里修改所有允许登录的多密码 ==========
+const ALLOW_PASSWORD_LIST = [
+  "111111",
+  "123456",
+  "620",
+  "6020",
+  "vv",
+  "VV",
+  "马"
+];
 
+let errorCount = 0;             // 记录当前密码错误次数
+const MAX_ERROR = 5;            // 最大错误尝试次数上限
+
+// 获取页面DOM元素
 const bodyBox = document.getElementById('bodyBox');
 const pwdInput = document.getElementById('pwdInput');
 const submitBtn = document.getElementById('submitBtn');
 const tipText = document.getElementById('tipText');
+const eyeBtn = document.getElementById('eyeBtn');
+let isShow = true;              // 默认true：明文打开
 
+// 眼睛按钮点击：切换明文 / 黑点密文
+eyeBtn.addEventListener('click', () => {
+  isShow = !isShow;
+  if(isShow) {
+    pwdInput.type = 'text';
+    eyeBtn.textContent = '🙈';
+  } else {
+    pwdInput.type = 'password';
+    eyeBtn.textContent = '👁️';
+  }
+});
+
+// 绑定点击登录事件
 submitBtn.addEventListener('click', checkPwd);
+// 绑定回车键快捷登录
 pwdInput.addEventListener('keydown', e => e.key === 'Enter' && checkPwd());
 
+/**
+ * 密码校验核心函数
+ */
 function checkPwd() {
+  // 去除输入内容前后空格
   const val = pwdInput.value.trim();
+
+  // 输入为空判断
   if (!val) {
     tipText.className = "tip error";
     tipText.innerText = "请输入密码";
     return;
   }
 
-  if (val === RIGHT_PASSWORD) {
-    // 密码正确，重置错误次数，跳转祝福页
+  // 密码在合法列表中，登录成功
+  if (ALLOW_PASSWORD_LIST.includes(val)) {
     errorCount = 0;
     tipText.className = "tip success";
     tipText.innerText = "密码正确，正在跳转...";
     bodyBox.classList.add('page-leave');
+    // 延迟匹配动画时长后跳转页面
     setTimeout(() => {
       location.assign("zhufu.html");
     }, 600);
@@ -120,6 +236,7 @@ function checkPwd() {
     errorCount++;
     const remain = MAX_ERROR - errorCount;
 
+    // 达到最大错误次数，触发锁定跳转
     if (errorCount >= MAX_ERROR) {
       tipText.className = "tip warn";
       tipText.innerText = "错误次数已达上限，即将跳转";
@@ -128,6 +245,7 @@ function checkPwd() {
         location.assign("on.html");
       }, 600);
     } else {
+      // 提示剩余次数并清空输入框
       tipText.className = "tip error";
       tipText.innerText = `密码错误，还剩余 ${remain} 次机会`;
       pwdInput.value = "";
