@@ -1,32 +1,71 @@
 <!DOCTYPE html>
+<!-- HTML5文档声明 -->
 <html lang="zh-CN">
+<!-- 设置页面语言为简体中文 -->
 <head>
+<!-- 头部：存放编码、视口、样式 -->
 <meta charset="UTF-8">
+<!-- 防止中文乱码，统一字符编码 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 移动端自适应布局 -->
 <title>致父亲的祝福</title>
+<!-- 浏览器标签标题 -->
 <style>
+/* 全局样式重置 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Microsoft YaHei", sans-serif;
 }
+/* 页面整体body样式 */
 body {
   min-height: 100vh;
+  /* 暖橙渐变背景，贴合父亲节温馨氛围 */
   background: linear-gradient(135deg, #f6d365, #fda085);
   padding: 60px 20px;
+  /* flex居中卡片 */
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
+  opacity: 0; /* 初始透明，等待载入淡入 */
   transition: opacity 0.8s ease-in-out;
+  position: relative;
+  overflow: hidden; /* 限制爱心溢出滚动条 */
 }
+/* 页面整体淡入激活类 */
 .page-fade-in {
   opacity: 1 !important;
 }
+/* 返回时页面淡出类 */
 .page-fade-out {
   opacity: 0 !important;
 }
+/* ========== 左上角缩小版返回按钮 ========== */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+  transition: all 0.6s ease;
+  z-index: 10;
+}
+.back-btn.show-btn {
+  opacity: 1;
+}
+.back-btn:hover {
+  background: rgba(0,0,0,0.55);
+}
+
+/* 白色祝福卡片容器 */
 .bless-container {
   max-width: 600px;
   width: 100%;
@@ -35,54 +74,96 @@ body {
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   text-align: center;
+  position: relative;
 }
+/* 卡片主标题 */
 .bless-container h1 {
   font-size: 32px;
   color: #d35400;
   margin-bottom: 20px;
-  /* 标题初始透明 */
-  opacity: 0;
+  opacity: 0; /* 初始隐藏 */
   transform: translateY(10px);
   transition: all 0.7s ease;
 }
+/* 祝福文本外层容器 */
 .bless-text {
   font-size: 17px;
   line-height: 2;
   color: #444;
   margin-bottom: 30px;
 }
-/* 每一行祝福文本样式 */
+/* 单独每一行祝福文字样式 */
 .bless-line {
   opacity: 0;
   transform: translateY(8px);
   transition: all 0.6s ease;
   display: block;
 }
-/* 动画激活类 */
+/* 文字入场动画激活类 */
 .line-show {
   opacity: 1;
   transform: translateY(0);
 }
-.back-btn {
-  padding: 12px 30px;
-  border: none;
-  border-radius: 8px;
-  background: #333;
-  color: #fff;
+
+/* ========== 信封收到按钮样式：初始透明，动画结束后显示 ========== */
+.envelope-box {
+  margin-top: 20px;
+}
+.envelope-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid #d35400;
+  background-color: #fff8f0;
+  color: #d35400;
+  font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   opacity: 0;
-  transition: all 0.6s ease;
+  visibility: hidden;
 }
-.back-btn.show-btn {
+/* 动画完成后激活显示 */
+.envelope-btn.show-envelope {
   opacity: 1;
+  visibility: visible;
 }
-.back-btn:hover {
-  background: #555;
+.envelope-btn:hover {
+  background-color: #ffe8d6;
+}
+/* 信封图标大小 */
+.envelope-icon {
+  font-size: 22px;
+  transition: transform 0.3s ease;
+}
+
+/* ========== 飘散爱心样式 ========== */
+.heart {
+  position: absolute;
+  font-size: 24px;
+  color: #ff6b6b;
+  pointer-events: none;
+  animation: floatUp 1.8s ease-out forwards;
+}
+/* 爱心上浮、渐隐动画 */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-180px) scale(0.4);
+  }
 }
 </style>
 </head>
+<!-- 页面可视区域 -->
 <body id="pageWrap">
+  <!-- 左上角固定缩小返回按钮 -->
+  <button class="back-btn" id="backBtn">返回登录页</button>
+
 <div class="bless-container">
   <h1 id="title">致我最敬爱的父亲</h1>
   <div class="bless-text">
@@ -95,46 +176,107 @@ body {
     <br>
     <span class="bless-line">父亲节快乐，我永远爱您❤️</span>
   </div>
-  <button class="back-btn" id="backBtn">返回登录页</button>
+
+  <!-- 信封收到按钮区域 -->
+  <div class="envelope-box">
+    <button class="envelope-btn" id="envelopeBtn">
+      <span class="envelope-icon" id="icon">✉️</span>
+      <span>收到</span>
+    </button>
+  </div>
 </div>
 
 <script>
+// 获取页面元素
 const pageWrap = document.getElementById('pageWrap');
 const backBtn = document.getElementById('backBtn');
 const title = document.getElementById('title');
 const lines = document.querySelectorAll('.bless-line');
+const envelopeBtn = document.getElementById('envelopeBtn');
+const icon = document.getElementById('icon');
+// 标记信封状态：false=密封，true=已打开
+let isOpen = false;
 
+// 页面加载完成后触发入场动画
 window.addEventListener('load', () => {
-  // 页面整体淡入
   setTimeout(() => {
+    // 页面整体淡入显示
     pageWrap.classList.add('page-fade-in');
-    // 标题动画
+
+    // 标题延迟滑入
     setTimeout(() => {
       title.style.opacity = "1";
       title.style.transform = "translateY(0)";
     }, 300);
 
-    // 逐行延迟淡入
+    // 遍历所有祝福行，逐行延迟出现，错开动画时间
     lines.forEach((item, index) => {
       setTimeout(() => {
         item.classList.add('line-show');
-      }, 600 + index * 500);
+      }, 1000 + index * 1000);
     });
 
-    // 最后显示按钮
+    // 计算所有文字完整动画结束的总时长
+    const totalTextTime = 1000 + lines.length * 1000;
+
+    // 文字全部播放完成后：同时显示左上角返回按钮 + 收到信封按钮
     setTimeout(() => {
       backBtn.classList.add('show-btn');
-    }, 600 + lines.length * 500);
+      envelopeBtn.classList.add('show-envelope');
+    }, totalTextTime);
+
   }, 50);
 });
 
-// 返回淡出逻辑不变
+// 返回按钮点击事件：页面淡出，跳转回登录index.html
 backBtn.addEventListener('click', () => {
   pageWrap.classList.add('page-fade-out');
   setTimeout(() => {
     location.assign("index.html");
   }, 600);
 });
+
+// 信封点击：切换打开状态 + 依次一颗颗冒出爱心
+envelopeBtn.addEventListener('click', () => {
+  // 防止重复多次切换信封，只允许打开一次
+  if (isOpen) return;
+
+  // 切换为打开信封
+  icon.textContent = "📭";
+  envelopeBtn.style.background = "#ffe8d6";
+  isOpen = true;
+
+  // 一共6颗爱心，间隔150ms依次弹出，实现一颗颗冒出的效果
+  createHeartOneByOne(6, 150);
+});
+
+/**
+ * 依次逐个生成爱心，间隔delay毫秒冒出一颗
+ * @param {number} total 爱心总数
+ * @param {number} delay 每颗间隔毫秒数
+ */
+function createHeartOneByOne(total, delay) {
+  for(let i = 0; i < total; i++){
+    // 每一颗设置延迟，错开出现
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      // 随机水平偏移
+      const randomX = (Math.random() - 0.5) * 120;
+      heart.style.left = `calc(50% + ${randomX}px)`;
+      heart.style.bottom = '80px';
+      // 随机动画时长，错落上浮
+      heart.style.animationDuration = (1.2 + Math.random() * 0.6) + 's';
+      document.body.appendChild(heart);
+
+      // 动画结束后自动移除DOM
+      setTimeout(() => {
+        heart.remove();
+      }, 1800);
+    }, i * delay);
+  }
+}
 </script>
 </body>
 </html>
