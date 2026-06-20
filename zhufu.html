@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>致父亲的祝福</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+.page-fade-in {
+  opacity: 1 !important;
+}
+.page-fade-out {
+  opacity: 0 !important;
+}
+.bless-container {
+  max-width: 600px;
+  width: 100%;
+  background: rgba(255,255,255,0.9);
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.bless-container h1 {
+  font-size: 32px;
+  color: #d35400;
+  margin-bottom: 20px;
+  /* 标题初始透明 */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.7s ease;
+}
+.bless-text {
+  font-size: 17px;
+  line-height: 2;
+  color: #444;
+  margin-bottom: 30px;
+}
+/* 每一行祝福文本样式 */
+.bless-line {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.6s ease;
+  display: block;
+}
+/* 动画激活类 */
+.line-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.back-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+.back-btn.show-btn {
+  opacity: 1;
+}
+.back-btn:hover {
+  background: #555;
+}
+</style>
+</head>
+<body id="pageWrap">
+<div class="bless-container">
+  <h1 id="title">致我最敬爱的父亲</h1>
+  <div class="bless-text">
+    <span class="bless-line">小时候，您是遮风挡雨的大树</span>
+    <span class="bless-line">长大后，我才懂您沉默的辛苦</span>
+    <br>
+    <span class="bless-line">感谢您多年的包容、付出与坚守</span>
+    <span class="bless-line">愿岁月温柔待您，少一些操劳，多一些轻松</span>
+    <span class="bless-line">身体康健，平安顺遂，天天舒心，万事无忧</span>
+    <br>
+    <span class="bless-line">父亲节快乐，我永远爱您❤️</span>
+  </div>
+  <button class="back-btn" id="backBtn">返回登录页</button>
+</div>
+
+<script>
+const pageWrap = document.getElementById('pageWrap');
+const backBtn = document.getElementById('backBtn');
+const title = document.getElementById('title');
+const lines = document.querySelectorAll('.bless-line');
+
+window.addEventListener('load', () => {
+  // 页面整体淡入
+  setTimeout(() => {
+    pageWrap.classList.add('page-fade-in');
+    // 标题动画
+    setTimeout(() => {
+      title.style.opacity = "1";
+      title.style.transform = "translateY(0)";
+    }, 300);
+
+    // 逐行延迟淡入
+    lines.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('line-show');
+      }, 600 + index * 500);
+    });
+
+    // 最后显示按钮
+    setTimeout(() => {
+      backBtn.classList.add('show-btn');
+    }, 600 + lines.length * 500);
+  }, 50);
+});
+
+// 返回淡出逻辑不变
+backBtn.addEventListener('click', () => {
+  pageWrap.classList.add('page-fade-out');
+  setTimeout(() => {
+    location.assign("index.html");
+  }, 600);
+});
+</script>
+</body>
+</html>

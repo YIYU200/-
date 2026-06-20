@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目开源提示</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+body{
+    min-height: 100vh;
+    background-color: #1a1a2e;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 先完全透明 */
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+/* 淡入激活样式 */
+.show{
+    opacity: 1;
+}
+.content-box{
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 50px 35px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    backdrop-filter: blur(10px);
+}
+.content-box h2{
+    color: #ffffff;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+.content-box p{
+    color: #cccccc;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+.github-btn{
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: #2ea44f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+.github-btn:hover{
+    background-color: #2c974b;
+}
+.back-link{
+    display: inline-block;
+    margin-top: 20px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 14px;
+}
+.back-link:hover{
+    color: #fff;
+}
+</style>
+</head>
+<body id="bodyDom">
+    <div class="content-box">
+        <h2>访问提示</h2>
+		<h2>别捣乱</h2>
+        <p>该项目代码已开源<br>请自行前往 GitHub 下载完整源码</p>
+        <a href="https://github.com" target="_blank" class="github-btn">前往 GitHub</a>
+        <br>
+        <a href="index.html" class="back-link">返回首页</a>
+    </div>
+
+<script>
+// DOM加载完毕直接执行淡入，不会出现空白卡死
+document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(()=>{
+        document.getElementById('bodyDom').classList.add('show');
+    }, 50);
+});
+</script>
+</body>
+</html>
